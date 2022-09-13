@@ -16,7 +16,7 @@ All of this is explained in more detail in the [paper](https://github.com/Hvass-
 
 ## Example
 
-Consider the mathematical expression `y[i] = G(F(x[i]))` where `F` and `G` are some functions, and `x[i]` is the input data and `y[i]` is the output data for index `i`. Because the output of the function `F` is used as the input to the function `G`, the two functions are said to be serially dependent and it may seem impossible to calculate them in parallel.
+Consider the expression `y[i] = G(F(x[i]))` where `F` and `G` are some functions, and `x[i]` is the input data and `y[i]` is the output data for index `i`. Because the output of the function `F` is used as the input to the function `G`, the two functions are said to be serially dependent and it may seem impossible to calculate them in parallel.
 
 But when `x[i]` is just one element in a stream of data e.g. with `i` going from `0` to some value `n-1`, then we can parallelize the nested computation of the functions `F` and `G` by first computing `F(x[i])` in one thread and saving the result in a variable called `F_buffer`, and in the second thread we then use the buffer that was written in the previous iteration to compute `y[i-1] = G(F_buffer)`. Once the two threads are both finished with their computations, we update `F_buffer` with the new result from the function `F`. This can be written as simplified pseudo-code:
 
@@ -34,7 +34,7 @@ The only drawback of doing the computation as a Parallel Pipeline, is that it ne
 
 ## Source-Code in C++
 
-The source-code in C++ gives 4 examples of different mathematical expressions that can be calculated in a Parallel Pipeline. From these examples you can understand the underlying idea of buffering the output of each thread, and create a Parallel Pipeline for your own particular problem.
+The source-code in C++ gives 4 examples of different expressions that can be calculated in a Parallel Pipeline. From these examples you can understand the underlying idea of buffering the output of each thread, and create a Parallel Pipeline for your own particular problem.
 
 For simplicity, these examples use "dummy" functions with strings as input and output data. The dummy functions "sleep" their execution thread for 100 msec to simulate heavy processing. The summation + operator does not "sleep" the thread in these examples.
 
